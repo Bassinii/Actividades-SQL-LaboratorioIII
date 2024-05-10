@@ -1,11 +1,20 @@
+use Univ
+go
 -- 1 Listado con nombre de usuario de todos los usuarios y sus respectivos nombres y apellidos.
      SELECT U.NombreUsuario, D.Nombres, D.Apellidos FROM Usuarios U
      INNER JOIN Datos_Personales D
      ON U.ID = D.ID
+
 -- 2 Listado con apellidos, nombres, fecha de nacimiento y nombre del país de nacimiento. 
+     SELECT D.Apellidos, D.Nombres, D.Nacimiento as FechaNaciemiento, P.Nombre FROM Datos_Personales D
+     INNER JOIN Localidades L ON L.ID = D.IDLocalidad 
+     INNER JOIN Paises P ON P.ID = L.IDPais
+
 -- 3 Listado con nombre de usuario, apellidos, nombres, email o celular de todos los usuarios que
---      vivan en una domicilio comience con vocal.
--- NOTA: Si no tiene email, obtener el celular.
+--   vivan en una domicilio comience con vocal.
+--   NOTA: Si no tiene email, obtener el celular.
+     
+
 -- 4 Listado con nombre de usuario, apellidos, nombres, email o celular o domicilio como 'Información de contacto'.
 -- NOTA: Si no tiene email, obtener el celular y si no posee celular obtener el domicilio.
 -- 5 Listado con apellido y nombres, nombre del curso y costo de la inscripción de todos los usuarios inscriptos a cursos.
@@ -37,4 +46,13 @@
 -- 21 Listado con nombre de curso, costo de cursado y una leyenda que indique "Costoso" si el costo de cursado
 --    es mayor a $ 15000, "Accesible" si el costo de cursado está entre $2500 y $15000, "Barato" si el costo 
 --    está entre $1 y $2499 y "Gratis" si el costo es $0.
-
+      SELECT Nombre, CostoCurso,
+    CASE
+        WHEN CostoCurso > 15000 THEN 'Costoso'
+        WHEN CostoCurso BETWEEN 2500 AND 15000 THEN 'Accesible'
+        WHEN CostoCurso BETWEEN 1 AND 2499 THEN 'Barato'
+        WHEN CostoCurso = 0 THEN 'Gratis'
+    END AS Leyenda
+FROM
+    Cursos;
+-- hecho con chat gpt
