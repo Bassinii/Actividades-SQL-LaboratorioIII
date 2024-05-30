@@ -13,10 +13,42 @@ go
 -- 3 Listado con nombre de usuario, apellidos, nombres, email o celular de todos los usuarios que
 --   vivan en una domicilio comience con vocal.
 --   NOTA: Si no tiene email, obtener el celular.
-     
+     SELECT 
+        U.NombreUsuario, 
+        DP.Apellidos, 
+        DP.Nombres,
+        DP.Domicilio, 
+        CASE 
+            WHEN DP.Email is not null THEN DP.Email
+            ELSE DP.Celular
+        END AS Contacto
+    FROM   
+        Usuarios U 
+    INNER JOIN 
+        Datos_Personales DP ON U.ID = DP.ID
+    WHERE
+        DP.Domicilio LIKE '[aeiouAEIOU]%'
+        AND (DP.Email IS NOT NULL OR DP.Celular IS NOT NULL)
 
 -- 4 Listado con nombre de usuario, apellidos, nombres, email o celular o domicilio como 'Información de contacto'.
 -- NOTA: Si no tiene email, obtener el celular y si no posee celular obtener el domicilio.
+    SELECT 
+        U.NombreUsuario,
+        DP.Apellidos,
+        DP.nombres,
+        CASE 
+            WHEN DP.Email IS NOT NULL THEN DP.Email
+            WHEN DP.Celular IS NOT NULL THEN DP.Celular
+            ELSE DP.Domicilio
+        END AS 'Información de Contacto'
+        FROM 
+            Usuarios U
+        INNER JOIN 
+            Datos_Personales DP ON DP.ID = U.ID
+        WHERE 
+            DP.Email IS NOT NULL OR DP.Celular IS NOT NULL OR DP.Domicilio IS NOT NULL
+
+
 -- 5 Listado con apellido y nombres, nombre del curso y costo de la inscripción de todos los usuarios inscriptos a cursos.
 -- NOTA: No deben figurar los usuarios que no se inscribieron a ningún curso.
 -- 6 Listado con nombre de curso, nombre de usuario y mail de todos los inscriptos a cursos que se hayan estrenado en el año 2020.
